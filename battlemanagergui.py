@@ -197,8 +197,40 @@ class Ui_MainWindow(QtGui.QMainWindow):
         c2 = int(self.calvary2line.text())
         p2 = int(self.pikemen2line.text())
         k2 = int(self.pikemen2line_2.text())
-        print("I got here")
+        troopList = []
+
+        troopList.append(f1)
+        troopList.append(a1)
+        troopList.append(c1)
+        troopList.append(p1)
+        troopList.append(k1)
+
+        troopList.append(f2)
+        troopList.append(a2)
+        troopList.append(c2)
+        troopList.append(p2)
+        troopList.append(k2)
+        #0-4 is Army 1, #5-9 is Army 2
+        runs = 0
+
+        while True:
+            if troopList[runs] == 0:
+                troopList[runs] = .01
+            runs = runs + 1
+            if runs > 9:
+                break
+            else:
+                continue
         
+        army1total = f1 + a1 + c1 + p1 + k1
+        army2total = f2 + a2 + c2 + p2 + k2
+
+        
+
+        
+        
+        
+
     def warning(self):
         warningBox = QtGui.QMessageBox.question(self, "Exit", "All Fields except for the army names must be filled out before executing the program. Are all fields filled out?", QtGui.QMessageBox.Yes | QtGui.QMessageBox.No)
         if warningBox == QtGui.QMessageBox.Yes:
