@@ -225,10 +225,35 @@ class Ui_MainWindow(QtGui.QMainWindow):
         army1total = f1 + a1 + c1 + p1 + k1
         army2total = f2 + a2 + c2 + p2 + k2
 
-        
+        army1adv = []
+        army2adv = []
 
-        
-        
+        runs1 = 0
+        runs2 = 5
+
+        while True:
+            if troopList[runs1] > troopList[runs2]:
+                army1adv.append(float(troopList[runs1]/troopList[runs2]))
+                army2adv.append(0.0)
+            elif troopList[runs1] < troopList[runs2]:
+                army1adv.append(0.0)
+                army2adv.append(float(troopList[runs2]/troopList[runs1]))
+            elif troopList[runs1] == troopList[runs2]:
+                army1adv.append(0.0)
+                army2adv.append(0.0)
+            print(runs1)
+            print(runs2)
+            print(army1adv)
+            print(army2adv)
+
+            runs1 = runs1 + 1
+            runs2 = runs2 + 1
+
+            if runs1 > 4:
+                break
+            else:
+                continue
+
         
 
     def warning(self):
