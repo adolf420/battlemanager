@@ -1,5 +1,5 @@
 from PyQt4 import QtCore, QtGui
-import sys
+import sys, random
 
 try:
     _fromUtf8 = QtCore.QString.fromUtf8
@@ -148,6 +148,7 @@ class Ui_MainWindow(QtGui.QMainWindow):
         with open ("NameSettings__.txt") as f:
             lines = f.readlines()
             for line in lines:
+                global names
                 names = line.split()
 
         self.pikemen1.setText(_translate("MainWindow", names[3], None))
@@ -176,6 +177,18 @@ class Ui_MainWindow(QtGui.QMainWindow):
         self.troopnames = self.troopnames_action
         self.troopnames.triggered.connect(self.help)
         self.actionQuit.triggered.connect(self.exit)
+
+    def battleView(self):
+        self.textEdit = QtGui.QTextEdit()
+        self.setCentralWidget(self.textEdit)
+
+    def open_file(self):
+        name = "battle.txt"
+        file = open(name, "r")
+        self.battleView()
+        with file:
+            text = file.read()
+            self.textEdit.setText(text)
 
     def battle(self):
         a1name = str(self.army1line.text())
@@ -241,6 +254,9 @@ class Ui_MainWindow(QtGui.QMainWindow):
             elif troopList[runs1] == troopList[runs2]:
                 army1adv.append(0.0)
                 army2adv.append(0.0)
+            else:
+                sys.exit()
+            
             print(runs1)
             print(runs2)
             print(army1adv)
@@ -249,17 +265,77 @@ class Ui_MainWindow(QtGui.QMainWindow):
             runs1 = runs1 + 1
             runs2 = runs2 + 1
 
-            if runs1 > 4:
-                break
-            else:
+            if runs1 < 5:
                 continue
+            else:
+                break
+        print("I made it here")
 
+        advTotal1 = army1adv[0] + army1adv[1] + army1adv[2] + army1adv[3] + army1adv[4]
+        advTotal2 = army2adv[0] + army2adv[1] + army2adv[2] + army2adv[3] + army2adv[4]
+
+        for y in range(1):
+            army1cas = random.randint(1,int(army1total + 1))
+        for i in range(1):
+            army2cas = random.randint(1,int(army2total + 1))
+        basecas1 = int(army1cas)/5 + 3            
+        basecas2 = int(army2cas)/5 + 3
         
+        for i in range(1):
+            army1fcas = random.randint(1,int(basecas1))
+            army1acas = random.randint(1,int(basecas1))
+            army1ccas = random.randint(1,int(basecas1))
+            army1pcas = random.randint(1,int(basecas1))
+            army1kcas = random.randint(1,int(basecas1))
+            army1totalcas = army1fcas + army1acas + army1ccas + army1pcas + army1kcas
+            army1rem = army1total - army1totalcas
 
+        for i in range(1):
+            army2fcas = random.randint(1,int(basecas2))
+            army2acas = random.randint(1,int(basecas2))
+            army2ccas = random.randint(1,int(basecas2))
+            army2pcas = random.randint(1,int(basecas2))
+            army2kcas = random.randint(1,int(basecas2))
+            army2totalcas = army2fcas + army2acas + army2ccas + army2pcas + army2kcas
+            army2rem = army2total - army2totalcas
+
+        finalScore = advTotal1 + advTotal2 + 1
+        for i in range(1):
+            winningScore = random.randint(1,int(finalScore))
+            
+        if winningScore > advTotal2:
+            print("I made it here")
+            winMessage = ("""
+Army 1 Is Victorious With {0} Casualties and {1} Troops Remaining.
+Details On Army 1 Casualties:
+{2}: {3}
+{4}: {5}
+{6}: {7}
+{8}: {9}
+{10}: {11}
+
+Army 2 Have {12} Casualties And Have {13} Troops Remaining.
+Details On Army 2 Casualties:
+{14}: {15}
+{16}: {17}
+{18}: {19}
+{20}: {21}
+{22}: {23}
+            """).format(army1totalcas, army1rem, names[0], army1fcas, names[1], army1acas, names[2], army1ccas, names[3], army1pcas, names[4], army1kcas, army2totalcas, army2rem, names[5], army2fcas, names[6], army2acas, names[7], army2ccas, names[8], army2pcas, names[9], army2kcas)
+        else:
+            print("I made it here")
+
+        with open("battle.txt", "w+") as f:
+            f.write(winMessage)
+        self.dialogs = list()
     def warning(self):
         warningBox = QtGui.QMessageBox.question(self, "Exit", "All Fields except for the army names must be filled out before executing the program. Are all fields filled out?", QtGui.QMessageBox.Yes | QtGui.QMessageBox.No)
         if warningBox == QtGui.QMessageBox.Yes:
+            print(sys.version)
             self.battle()
+            self.open_file()
+            self.test()
+            print("I made it here")
         else:
             pass
 
@@ -274,10 +350,43 @@ class Ui_MainWindow(QtGui.QMainWindow):
     def exit(self):
         sys.exit()
 
+    def test(self):
+        self.dialog = second(self)
+        self.dialogs.append(self.dialog)
+        self.dialog.show()
+ 
+class second(QtGui.QMainWindow):
+    def setupUi(self, MainWindow):
+        MainWindow.setObjectName(_fromUtf8("MainWindow"))
+        MainWindow.resize(800, 212)
+        self.centralwidget = QtGui.QWidget(MainWindow)
+        self.centralwidget.setObjectName(_fromUtf8("centralwidget"))
+        self.gridLayout = QtGui.QGridLayout(self.centralwidget)
+        self.gridLayout.setObjectName(_fromUtf8("gridLayout"))
+        self.results = QtGui.QTextEdit(self.centralwidget)
+        self.results.setObjectName(_fromUtf8("results"))
+        self.gridLayout.addWidget(self.results, 0, 0, 1, 1)
+        MainWindow.setCentralWidget(self.centralwidget)
+        self.menubar = QtGui.QMenuBar(MainWindow)
+        self.menubar.setGeometry(QtCore.QRect(0, 0, 800, 21))
+        self.menubar.setObjectName(_fromUtf8("menubar"))
+        MainWindow.setMenuBar(self.menubar)
+        self.statusbar = QtGui.QStatusBar(MainWindow)
+        self.statusbar.setObjectName(_fromUtf8("statusbar"))
+        MainWindow.setStatusBar(self.statusbar)
+
+        self.retranslateUi(MainWindow)
+        QtCore.QMetaObject.connectSlotsByName(MainWindow)
+
+    def retranslateUi(self, MainWindow):
+        MainWindow.setWindowTitle(_translate("MainWindow", "Battle Results", None))
+
+
+
 if __name__ == "__main__":
     import sys
     app = QtGui.QApplication(sys.argv)
-    app.setStyle("Plastique")
+    app.setStyle("Cleanlooks")
     MainWindow = QtGui.QMainWindow()
     ui = Ui_MainWindow()
     ui.setupUi(MainWindow)
